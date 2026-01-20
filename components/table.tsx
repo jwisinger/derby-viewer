@@ -16,45 +16,40 @@ export default async function Table() {
       throw e
   }
 
-  const profiles = data
-  const duration = Date.now() - startTime
+  const racer = data
   
   return (
     <div className="bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 p-4 shadow-2xl ring-1 ring-white/60 rounded-2xl backdrop-blur-lg max-w-2xl mx-auto w-full">
       <div className="flex justify-between items-center mb-4">
         <div className="space-y-2">
-          <div className="flex items-end gap-2">
-            <div className="text-center">
-              <div className="text-7xl font-black text-pink-600 leading-none" style={{ fontFamily: 'var(--font-fredoka)' }}>G<span className="text-5xl">.</span></div>
-              <p className="text-xs font-semibold text-pink-600 mt-1">go-getter</p>
-            </div>
-            <div className="text-center">
-              <div className="text-7xl font-black text-orange-500 leading-none" style={{ fontFamily: 'var(--font-fredoka)' }}>I<span className="text-5xl">.</span></div>
-              <p className="text-xs font-semibold text-orange-500 mt-1">innovator</p>
-            </div>
-            <div className="text-center">
-              <div className="text-7xl font-black text-cyan-500 leading-none" style={{ fontFamily: 'var(--font-fredoka)' }}>R<span className="text-5xl">.</span></div>
-              <p className="text-xs font-semibold text-cyan-500 mt-1">risk-taker</p>
-            </div>
-            <div className="text-center">
-              <div className="text-7xl font-black text-green-600 leading-none" style={{ fontFamily: 'var(--font-fredoka)' }}>L<span className="text-5xl">.</span></div>
-              <p className="text-xs font-semibold text-green-600 mt-1">leader</p>
-            </div>
-          </div>
+          <Image
+            src="/GIRL3.jpg"
+            alt="G.I.R.L. Logo"
+            width={300}
+            height={120}
+            className="h-24 w-auto"
+          />
         </div>
         <RefreshButton />
       </div>
       <div className="space-y-1">
-        {profiles.map((user) => {
-          const levelColors: { [key: string]: string } = {
-            'Daisy': 'from-cyan-400 to-cyan-500',
-            'Brownie': 'from-amber-700 to-amber-800',
-            'Junior': 'from-purple-500 to-purple-700',
-            'Cadette': 'from-red-500 to-red-600',
-            'Senior': 'from-orange-400 to-orange-600',
-            'Ambassador': 'from-yellow-400 to-yellow-500'
+        {racer.map((user) => {
+          const levelColorMap: { [key: string]: string } = {
+            'Daisy': 'rgb(0, 153, 255)',
+            'Brownie': 'rgb(102, 51, 0)',
+            'Junior': 'rgb(153, 51, 153)',
+            'Cadette': 'rgb(204, 0, 0)',
+            'Senior': 'rgb(255, 102, 51)',
+            'Ambassador': 'rgb(255, 153, 51)',
+            'Adult': 'rgb(204, 204, 204)'
           };
-          const bgColor = levelColors[user.Level] || 'from-gray-400 to-gray-600';
+
+          const levelColor = levelColorMap[user.Level] || 'rgb(128, 128, 128)';
+          const darkerColor = levelColorMap[user.Level] ?
+            `rgb(${Math.max(0, parseInt(levelColor.match(/\d+/g)![0]) - 30)}, ${Math.max(0, parseInt(levelColor.match(/\d+/g)![1]) - 30)}, ${Math.max(0, parseInt(levelColor.match(/\d+/g)![2]) - 30)})` :
+            'rgb(100, 100, 100)';
+
+          const colorStyle = { background: `linear-gradient(135deg, ${levelColor} 0%, ${darkerColor} 100%)` };
 
           return (
             <div
@@ -62,7 +57,7 @@ export default async function Table() {
               className="bg-white/80 backdrop-blur rounded-lg p-2 shadow-lg hover:shadow-xl transition-shadow border border-white/40 flex items-center justify-between"
             >
               <div className="flex items-center space-x-3">
-                <div className={`bg-gradient-to-br ${bgColor} p-1 rounded-full ring-2 ring-white shadow-lg flex-shrink-0`}>
+                <div className="bg-gradient-to-br p-1 rounded-full ring-2 ring-white shadow-lg flex-shrink-0" style={colorStyle}>
                   <Image
                     src={`data:image/jpeg;base64,${Buffer.from(user.Image).toString('base64')}`}
                     alt={user.Name}
@@ -76,7 +71,7 @@ export default async function Table() {
                   <p className="text-sm text-gray-600">Troop {user.Troop}</p>
                 </div>
               </div>
-              <span className={`inline-block px-3 py-1 rounded-full text-sm font-bold text-white bg-gradient-to-r ${bgColor} flex-shrink-0`}>
+              <span className="inline-block px-3 py-1 rounded-full text-sm font-bold text-white bg-gradient-to-r flex-shrink-0" style={colorStyle}>
                 {user.Level}
               </span>
             </div>
