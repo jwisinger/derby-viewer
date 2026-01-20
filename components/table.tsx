@@ -46,10 +46,13 @@ export default async function Table() {
 
           const levelColor = levelColorMap[user.Level] || 'rgb(128, 128, 128)';
           const darkerColor = levelColorMap[user.Level] ?
-            `rgb(${Math.max(0, parseInt(levelColor.match(/\d+/g)![0]) - 30)}, ${Math.max(0, parseInt(levelColor.match(/\d+/g)![1]) - 30)}, ${Math.max(0, parseInt(levelColor.match(/\d+/g)![2]) - 30)})` :
-            'rgb(100, 100, 100)';
+            `rgb(${Math.max(0, parseInt(levelColor.match(/\d+/g)![0]) - 60)}, ${Math.max(0, parseInt(levelColor.match(/\d+/g)![1]) - 60)}, ${Math.max(0, parseInt(levelColor.match(/\d+/g)![2]) - 60)})` :
+            'rgb(80, 80, 80)';
 
-          const colorStyle = { background: `linear-gradient(135deg, ${levelColor} 0%, ${darkerColor} 100%)` };
+          const colorStyle = {
+            background: `linear-gradient(135deg, ${levelColor} 0%, ${darkerColor} 100%)`,
+            boxShadow: `0 4px 15px rgba(0, 0, 0, 0.2), inset -1px -1px 3px rgba(255, 255, 255, 0.2)`
+          };
 
           return (
             <div
