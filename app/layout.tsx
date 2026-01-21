@@ -1,11 +1,12 @@
 import './globals.css'
 import { Inter, Fredoka } from 'next/font/google'
+import { AuthProvider } from '@/context/auth-context'
 
 export const metadata = {
   metadataBase: new URL('https://postgres-starter.vercel.app'),
-  title: 'Postgres Demo',
+  title: 'Derby Viewer',
   description:
-    'A simple Next.js app with a Postgres database',
+    'Viewer for Trefoil Derby database.'
 }
 
 const inter = Inter({
@@ -27,7 +28,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${fredoka.variable}`}>{children}</body>
+      <body className={`${inter.variable} ${fredoka.variable}`}>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   )
 }
