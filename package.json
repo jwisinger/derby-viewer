@@ -1,9 +1,23 @@
 {
-  "name": "postgres-starter",
-  "repository": "https://github.com/vercel/examples.git",
-  "license": "MIT",
+  "name": "derby-viewer",
   "version": "0.0.0",
   "private": true,
+  "description": "Trefoil Derby Viewer App",
+  "homepage": "https://github.com/jwisinger/postgres-starter",
+  "bugs": {
+    "url": "https://github.com/jwisinger/postgres-starter"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jwisinger/postgres-starter"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "commonjs",
+  "main": "next.config.js",
+  "directories": {
+    "lib": "lib"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
