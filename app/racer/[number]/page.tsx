@@ -98,11 +98,6 @@ export default async function RacerDetail({ params }: RacerDetailProps) {
 
                 <div className="flex items-center gap-4 mb-8">
                   <div className="text-center">
-                    <p className="text-gray-600 text-sm">Member Number</p>
-                    <p className="text-2xl font-bold text-gray-900">{racer.Number}</p>
-                  </div>
-                  <div className="w-px h-12 bg-gray-300"></div>
-                  <div className="text-center">
                     <p className="text-gray-600 text-sm">Troop</p>
                     <p className="text-2xl font-bold text-gray-900">{racer.Troop}</p>
                   </div>
@@ -128,10 +123,10 @@ export default async function RacerDetail({ params }: RacerDetailProps) {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Troop:</span>
-                      <span className="font-semibold text-gray-900">Troop {racer.Troop}</span>
+                      <span className="font-semibold text-gray-900">{racer.Troop}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Member ID:</span>
+                      <span className="text-gray-600">Racer ID:</span>
                       <span className="font-semibold text-gray-900">{racer.Number}</span>
                     </div>
                   </div>

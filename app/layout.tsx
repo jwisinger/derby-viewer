@@ -3,23 +3,11 @@ import { Inter, Fredoka } from 'next/font/google'
 import { AuthProvider } from '@/context/auth-context'
 
 export const metadata = {
-  metadataBase: new URL('https://postgres-starter.vercel.app'),
+  metadataBase: new URL('https://derbyviewer.vercel.app'),
   title: 'Derby Viewer',
   description:
     'Viewer for Trefoil Derby database.'
 }
-
-const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
-  display: 'swap',
-})
-
-const fredoka = Fredoka({
-  variable: '--font-fredoka',
-  subsets: ['latin'],
-  display: 'swap',
-})
 
 export default function RootLayout({
   children,
@@ -28,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${fredoka.variable}`}>
+      <body className={``}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
