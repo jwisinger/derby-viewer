@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import postgres from 'postgres'
 import ProtectedContent from '@/components/protected-content'
+import RefreshButton from '@/components/refresh-button'
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' })
 
@@ -97,12 +98,15 @@ export default async function RacerDetail({ params }: RacerDetailProps) {
       <ProtectedContent>
         <main className="relative flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 p-4">
           <div className="w-full max-w-2xl">
-            <Link
-              href="/"
-              className="mb-4 inline-flex items-center text-purple-600 hover:text-purple-800 font-semibold transition-colors"
-            >
-              ← Back to List
-            </Link>
+            <div className="mb-4 flex justify-between items-center">
+              <Link
+                href="/"
+                className="inline-flex items-center text-purple-600 hover:text-purple-800 font-semibold transition-colors"
+              >
+                ← Back to List
+              </Link>
+              <RefreshButton />
+            </div>
 
             <div className="bg-white/80 backdrop-blur rounded-2xl p-8 shadow-2xl ring-1 ring-white/60">
               <div className="flex flex-col items-center">
