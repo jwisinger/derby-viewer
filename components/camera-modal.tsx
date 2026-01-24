@@ -50,6 +50,15 @@ export default function CameraModal({ isOpen, onClose }: CameraModalProps) {
     }
   }, [isOpen])
 
+  useEffect(() => {
+    // Ensure video plays when returning to live view
+    if (videoRef.current && !isPhotoTaken && stream) {
+      videoRef.current.play().catch(() => {
+        // Ignore play errors
+      })
+    }
+  }, [isPhotoTaken, stream])
+
   const takePhoto = () => {
     if (videoRef.current) {
       const video = videoRef.current
@@ -75,9 +84,18 @@ export default function CameraModal({ isOpen, onClose }: CameraModalProps) {
     }
   }
 
-  const retakePhoto = () => {
+  const retakePhoto = async () => {
     setIsPhotoTaken(false)
     setCapturedImage(null)
+    // Reinitialize camera to ensure video plays properly
+    setTimeout(() => {
+      if (videoRef.current && stream) {
+        videoRef.current.play().catch(() => {
+          // If play fails, reinitialize camera
+          setupCamera()
+        })
+      }
+    }, 0)
   }
 
   const uploadPhoto = () => {
