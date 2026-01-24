@@ -84,18 +84,20 @@ export default function CameraModal({ isOpen, onClose }: CameraModalProps) {
     }
   }
 
-  const retakePhoto = async () => {
+  const retakePhoto = () => {
+    // Stop current stream
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop())
+    }
+
+    // Reset all state
     setIsPhotoTaken(false)
     setCapturedImage(null)
-    // Reinitialize camera to ensure video plays properly
-    setTimeout(() => {
-      if (videoRef.current && stream) {
-        videoRef.current.play().catch(() => {
-          // If play fails, reinitialize camera
-          setupCamera()
-        })
-      }
-    }, 0)
+    setHasPermission(null)
+    setStream(null)
+
+    // Reinitialize camera
+    setupCamera()
   }
 
   const uploadPhoto = () => {
