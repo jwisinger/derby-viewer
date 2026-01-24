@@ -17,6 +17,8 @@ export default function CameraModal({ isOpen, onClose }: CameraModalProps) {
   const [stream, setStream] = useState<MediaStream | null>(null)
   const [isRequesting, setIsRequesting] = useState(false)
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user')
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadError, setUploadError] = useState<string | null>(null)
 
   const setupCamera = async (mode: 'user' | 'environment' = 'user') => {
     try {
@@ -122,11 +124,35 @@ export default function CameraModal({ isOpen, onClose }: CameraModalProps) {
     setupCamera()
   }
 
-  const uploadPhoto = () => {
-    if (capturedImage) {
-      console.log('Photo captured:', capturedImage)
-      // TODO: Handle upload logic here
+  const uploadPhoto = async () => {
+    if (!capturedImage) return
+
+    setIsUploading(true)
+    setUploadError(null)
+
+    try {
+      const response = await fetch('/api/upload-photo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ imageData: capturedImage })
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to upload photo')
+      }
+
+      const data = await response.json()
+      console.log('Photo uploaded successfully:', data.url)
       onClose()
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Upload failed'
+      setUploadError(errorMessage)
+      console.error('Upload error:', error)
+    } finally {
+      setIsUploading(false)
     }
   }
 
@@ -216,19 +242,27 @@ export default function CameraModal({ isOpen, onClose }: CameraModalProps) {
               <>
                 <button
                   onClick={retakePhoto}
-                  className="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                  disabled={isUploading}
+                  className="flex-1 bg-gray-500 hover:bg-gray-600 disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded-lg transition-colors"
                 >
                   Retake Photo
                 </button>
                 <button
                   onClick={uploadPhoto}
-                  className="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                  disabled={isUploading}
+                  className="flex-1 bg-green-500 hover:bg-green-600 disabled:bg-green-400 text-white font-bold py-2 px-4 rounded-lg transition-colors"
                 >
-                  Upload
+                  {isUploading ? 'Uploading...' : 'Upload'}
                 </button>
               </>
             )}
           </div>
+
+          {uploadError && (
+            <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
+              {uploadError}
+            </div>
+          )}
         </div>
       </div>
     </div>
