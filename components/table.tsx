@@ -1,7 +1,8 @@
 import postgres from 'postgres'
 import TableWithFilter from './table-with-filter'
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+const eventName = "myevent"
+const sql = postgres(process.env.POSTGRES_URL! + "/" + eventName, { ssl: "require" });
 
 export default async function Table() {
   let racers
