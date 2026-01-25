@@ -105,48 +105,49 @@ export default function TableWithFilter({ racers: initialRacers, databases }: Ta
             className="h-24 w-auto"
           />
         </div>
-        <div className="flex gap-6 items-center">
-          <button
-            onClick={() => setIsCameraOpen(true)}
-            className="hover:text-gray-900 transition-colors"
+        <RefreshButton />
+      </div>
+      <div className="flex justify-between items-center">
+        <button
+          onClick={() => setIsCameraOpen(true)}
+          className="flex justify-between px-4 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-gray-900 font-medium transition-colors text-left border border-blue-200 hover:border-blue-300"
+          >
+          <svg
+            className="w-8 h-8 text-gray-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0118.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+          <span className="px-2">Take Photo</span>
+        </button>
+        <button
+            onClick={handleSlideshowOpen}
+            className="flex justify-between px-4 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-gray-900 font-medium transition-colors text-left border border-blue-200 hover:border-blue-300"
             aria-label="Open camera"
           >
-            <svg
-              className="w-8 h-8 text-gray-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0118.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
-          </button>
-          <button
-            onClick={handleSlideshowOpen}
-            className="hover:text-gray-900 transition-colors"
-            aria-label="Open slideshow"
+          <svg
+            className="w-8 h-8 text-gray-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 25 25"
           >
-            <svg
-              className="w-8 h-8 text-gray-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 25 25"
-            >
-              <path fill="currentColor" d="M20 3H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h7v3H8v2h8v-2h-3v-3h7c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2M10 13V7l5 3z"/>
-            </svg>
-          </button>
-        </div>
-        <RefreshButton />
+            <path fill="currentColor" d="M20 3H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h7v3H8v2h8v-2h-3v-3h7c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2M10 13V7l5 3z"/>
+          </svg>
+          <span className="px-2">View Slideshow</span>
+        </button>
       </div>
 
       {databases.length === 0 ? (
@@ -158,7 +159,7 @@ export default function TableWithFilter({ racers: initialRacers, databases }: Ta
       ) : (
         <>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2 text-center">
               Select Event
             </label>
             <select
