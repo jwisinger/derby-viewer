@@ -6,6 +6,7 @@ import Link from 'next/link'
 import RefreshButton from './refresh-button'
 import CameraModal from './camera-modal'
 import SlideshowModal from './slideshow-modal'
+import getImages from '@/lib/getImages'
 import { getRacersFromDatabase } from '@/lib/actions'
 
 interface User {
@@ -26,11 +27,12 @@ export default function TableWithFilter({ racers: initialRacers, databases }: Ta
   const [searchTerm, setSearchTerm] = useState('')
   const [isCameraOpen, setIsCameraOpen] = useState(false)
   const [isSlideshowOpen, setIsSlideshowOpen] = useState(false)
-  const [slideshowImages, setSlideshowImages] = useState<string[]>([])
+  const [slideshowImagesDatabase, setSlideshowImagesDatabase] = useState<string[]>([])
+  const [slideshowImagesBlobs, setSlideshowImagesBlobs] = useState<string[]>([])
   const [selectedDatabase, setSelectedDatabase] = useState<string | null>(null)
   const [isLoadingDatabase, setIsLoadingDatabase] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
+  
   // Set first database as default on mount
   useEffect(() => {
     if (databases.length > 0 && !selectedDatabase) {
@@ -49,6 +51,13 @@ export default function TableWithFilter({ racers: initialRacers, databases }: Ta
     } finally {
       setIsLoadingDatabase(false)
     }
+
+    try {
+      const images = await getImages()
+      setSlideshowImagesBlobs(images)
+    } catch (error) {
+      console.error('Error loading images:', error)
+    } 
   }
 
   const handleSlideshowOpen = () => {
@@ -58,7 +67,7 @@ export default function TableWithFilter({ racers: initialRacers, databases }: Ta
       .map(racer => racer.Image)
 
     if (images.length > 0) {
-      setSlideshowImages(images)
+      setSlideshowImagesDatabase(images)
       setIsSlideshowOpen(true)
     }
   }
@@ -262,7 +271,7 @@ export default function TableWithFilter({ racers: initialRacers, databases }: Ta
         </>
       )}
       <CameraModal isOpen={isCameraOpen} onClose={() => setIsCameraOpen(false)} />
-      <SlideshowModal isOpen={isSlideshowOpen} onClose={() => setIsSlideshowOpen(false)} images={slideshowImages} />
+      <SlideshowModal isOpen={isSlideshowOpen} onClose={() => setIsSlideshowOpen(false)} images={slideshowImagesBlobs} />
     </div>
   )
 }
