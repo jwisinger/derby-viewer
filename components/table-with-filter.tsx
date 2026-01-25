@@ -105,7 +105,7 @@ export default function TableWithFilter({ racers: initialRacers, databases }: Ta
             className="h-24 w-auto"
           />
         </div>
-        <div className="flex gap-12 items-center">
+        <div className="flex gap-6 items-center">
           <button
             onClick={() => setIsCameraOpen(true)}
             className="hover:text-gray-900 transition-colors"
