@@ -7,12 +7,12 @@ import RefreshButton from '@/components/refresh-button'
 import RaceTimes from '@/components/race-times'
 
 interface RacerDetailProps {
-  params: {
+  params: Promise<{
     number: string
-  }
-  searchParams: {
+  }>
+  searchParams: Promise<{
     database?: string
-  }
+  }>
 }
 
 interface Racer {
@@ -27,18 +27,22 @@ export const dynamic = 'force-dynamic'
 
 export default async function RacerDetail({ params, searchParams }: RacerDetailProps) {
   const resolvedParams = await params
+  const resolvedSearchParams = await searchParams
   const racerNumber = parseInt(resolvedParams.number)
-  const databaseName = searchParams.database || 'myevent'
-
-  // Create database-specific connection
-  //const baseUrl = process.env.POSTGRES_URL!.replace(/\/[^/]+$/, `/${databaseName}`)
-  const baseUrl = process.env.POSTGRES_URL! + databaseName
-  const sql = postgres(baseUrl, { ssl: "require" })
+  const databaseName = resolvedSearchParams.database
 
   // Validate that the number is actually a valid integer
   if (isNaN(racerNumber)) {
     notFound()
   }
+
+  // Validate that database parameter is provided
+  if (!databaseName) {
+    notFound()
+  }
+
+  const baseUrl = process.env.POSTGRES_URL! + databaseName
+  const sql = postgres(baseUrl, { ssl: "require" })
 
   try {
     const data = await sql`SELECT * FROM "raceTable" WHERE "Number" = ${racerNumber}`
@@ -79,6 +83,8 @@ export default async function RacerDetail({ params, searchParams }: RacerDetailP
       }
     }
 
+    await sql.end()
+
     const levelColorMap: { [key: string]: string } = {
       Daisy: 'rgb(0, 153, 255)',
       Brownie: 'rgb(102, 51, 0)',
@@ -102,7 +108,7 @@ export default async function RacerDetail({ params, searchParams }: RacerDetailP
       boxShadow: `0 4px 15px rgba(0, 0, 0, 0.2), inset -1px -1px 3px rgba(255, 255, 255, 0.2)`
     }
 
-    return (
+    const result = (
       <ProtectedContent>
         <main className="relative flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 p-4">
           <div className="w-full max-w-2xl">
@@ -199,8 +205,12 @@ export default async function RacerDetail({ params, searchParams }: RacerDetailP
         </main>
       </ProtectedContent>
     )
+
+    return result
   } catch (error) {
     console.error('Error fetching racer details:', error)
     notFound()
+  } finally {
+    await sql.end()
   }
 }
