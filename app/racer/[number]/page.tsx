@@ -45,7 +45,7 @@ export default async function RacerDetail({ params, searchParams }: RacerDetailP
   const sql = postgres(baseUrl, { ssl: "require" })
 
   try {
-    const data = await sql`SELECT * FROM "raceTable" WHERE "Number" = ${racerNumber}`
+    const data = await sql`SELECT * FROM "racerTable" WHERE "Number" = ${racerNumber}`
 
     if (!data || data.length === 0) {
       notFound()
@@ -69,7 +69,7 @@ export default async function RacerDetail({ params, searchParams }: RacerDetailP
                                 WHERE table_schema = 'public' -- Filter for the 'public' schema
                                 AND table_type = 'BASE TABLE'`
     const tablelist: string[] = queryResp.map(row => row.table_name);
-    const raceList = tablelist.filter(table => (table !== 'raceTable') && (table !== `settingsTable`));
+    const raceList = tablelist.filter(table => (table !== 'racerTable') && (table !== `settingsTable`));
     let raceTimes: string[] = []
 
     for (const race of raceList) {

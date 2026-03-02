@@ -49,7 +49,7 @@ export default async function Table() {
       const baseUrl = process.env.POSTGRES_URL! + databases[0]
       const sql = postgres(baseUrl, { ssl: "require" })
       try {
-        racers = await sql`SELECT * FROM "raceTable"`
+        racers = await sql`SELECT * FROM "racerTable"`
         videoLinks = await sql`SELECT * FROM "videoTable"`
       } finally {
         await sql.end()

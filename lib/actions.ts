@@ -70,7 +70,7 @@ export async function getRacersFromDatabase(databaseName: string): Promise<Racer
   const dbSql = postgres(baseUrl, { ssl: "require" })
 
   try {
-    const racers = await dbSql`SELECT * FROM "raceTable"`
+    const racers = await dbSql`SELECT * FROM "racerTable"`
 
     // Convert image data to serializable format
     return racers.map((racer: any) => ({
