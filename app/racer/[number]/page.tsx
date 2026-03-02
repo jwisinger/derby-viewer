@@ -69,7 +69,7 @@ export default async function RacerDetail({ params, searchParams }: RacerDetailP
                                 WHERE table_schema = 'public' -- Filter for the 'public' schema
                                 AND table_type = 'BASE TABLE'`
     const tablelist: string[] = queryResp.map(row => row.table_name);
-    const raceList = tablelist.filter(table => (table !== 'racerTable') && (table !== `settingsTable`));
+    const raceList = tablelist.filter(table => (table !== 'racerTable') && (table !== `videoTable`) && (table !== `raceTable`));
     let raceTimes: string[] = []
 
     for (const race of raceList) {
